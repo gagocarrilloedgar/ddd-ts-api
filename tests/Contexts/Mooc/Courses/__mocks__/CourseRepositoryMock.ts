@@ -14,4 +14,5 @@ export class CourseRepositoryMock implements CourseRepository {
     expect(lastSavedCourse).toBeInstanceOf(Course);
     expect(lastSavedCourse.id).toEqual(expected.id);
   }
+
 }

@@ -1,4 +1,4 @@
-import { json, urlencoded } from 'body-parser';
+import bodyParser from 'body-parser';
 import compress from 'compression';
 import errorHandler from 'errorhandler';
 import express, { Request, Response } from 'express';
@@ -16,8 +16,8 @@ export class Server {
   constructor(port: string) {
     this.port = port;
     this.express = express();
-    this.express.use(json());
-    this.express.use(urlencoded({ extended: true }));
+    this.express.use(bodyParser.json());
+    this.express.use(bodyParser.urlencoded({ extended: true }));
     this.express.use(helmet.xssFilter());
     this.express.use(helmet.noSniff());
     this.express.use(helmet.hidePoweredBy());
@@ -29,9 +29,9 @@ export class Server {
 
     registerRoutes(router);
 
-    router.use((err: Error, _req: Request, res: Response, _next: Function) => {
+    router.use((err: Error, req: Request, res: Response, next: Function) => {
       console.log(err);
-      res.status(httpStatus.INTERNAL_SERVER_ERROR).send();
+      res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err.message);
     });
   }
 

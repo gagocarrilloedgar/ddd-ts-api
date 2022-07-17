@@ -1,13 +1,15 @@
-import { StringValueObject } from '../../Shared/domain/value-object/StringValueObject';
-import { CourseNameLengthExceeded } from './CourseNameLengthExceeded';
+import { StringValueObject } from '../../../Shared/domain/value-object/StringValueObject';
+import { InvalidArgumentError } from '../../../Shared/domain/value-object/InvalidArgumentError';
 
 export class CourseName extends StringValueObject {
   constructor(value: string) {
     super(value);
-    this.ensureLengthIsLessThan30Char(value);
+    this.ensureLengthIsLessThan30Characters(value);
   }
 
-  private ensureLengthIsLessThan30Char(value: string): void {
-    if (value.length > 30) throw new CourseNameLengthExceeded(`The course name ${value} is too long`);
+  private ensureLengthIsLessThan30Characters(value: string): void {
+    if (value.length > 30) {
+      throw new InvalidArgumentError(`The Course Name <${value}> has more than 30 characters`);
+    }
   }
 }

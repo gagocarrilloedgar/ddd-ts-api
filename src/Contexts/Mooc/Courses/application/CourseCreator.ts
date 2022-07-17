@@ -1,24 +1,23 @@
-import { Course } from '../domain/Course';
-import { CourseRepository } from '../domain/CourseRepository';
-import { CourseCreateorRequest } from '../domain/CourseCreateorRequest';
 import { CourseId } from '../../Shared/domain/Courses/CourseId';
-import { CourseName } from '../domain/CourseName';
+import { Course } from '../domain/Course';
 import { CourseDuration } from '../domain/CourseDuration';
+import { CourseName } from '../domain/CourseName';
+import { CourseRepository } from '../domain/CourseRepository';
+import { CreateCourseRequest } from './CreateCourseRequest';
 
 export class CourseCreator {
-  private readonly repository: CourseRepository;
+  private repository: CourseRepository;
 
   constructor(repository: CourseRepository) {
     this.repository = repository;
   }
 
-  async run(courseRequest: CourseCreateorRequest): Promise<void> {
-    const course = new Course({
-      id: new CourseId(courseRequest.id),
-      name: new CourseName(courseRequest.name),
-      duration: new CourseDuration(courseRequest.duration)
-    });
-
+  async run(request: CreateCourseRequest): Promise<void> {
+    const course = new Course(
+      new CourseId(request.id),
+      new CourseName(request.name),
+      new CourseDuration(request.duration)
+    );
     return this.repository.save(course);
   }
 }
